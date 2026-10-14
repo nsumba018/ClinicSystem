@@ -1,8 +1,10 @@
 package kigali.clinic.rw.service.impl;
 
 import kigali.clinic.rw.domain.Doctor;
+import kigali.clinic.rw.domain.Office;
 import kigali.clinic.rw.domain.Specialization;
 import kigali.clinic.rw.repository.DoctorRepository;
+import kigali.clinic.rw.repository.OfficeRepository;
 import kigali.clinic.rw.repository.SpecializationRepository;
 import kigali.clinic.rw.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
     private SpecializationRepository specializationRepository;
+    @Autowired
+    private OfficeRepository officeRepository;
 
     @Override
     public String saveDoctor(Doctor doctor) {
@@ -113,6 +117,27 @@ public class DoctorServiceImpl implements DoctorService {
             return "Specialization removed from the doctor";
         }
     }
+
+    @Override
+    public String changeDoctorOffice(Long doctorId, int officeNumber) {
+        Optional<Doctor> findDoctor = doctorRepository.findById(doctorId);
+        Optional<Office> office = officeRepository.findByOfficeNumber(officeNumber);
+        if(findDoctor.isEmpty()){
+            return "The doctor with that id does not exist";
+        }else if(office.isEmpty()){
+            return "The office with that office number does not exist";
+        }else if(doctorRepository.existsByOffice(office.get())){
+            Doctor doctor = findDoctor.get();
+            if(doctor.getOffice() == null || !doctor.getOffice().getId().equals(office.get().getId())){
+                return "That office is taken by other doctor";
+            }
+        }
+        Doctor doctor = findDoctor.get();
+        doctor.setOffice(office.get());
+        doctorRepository.save(doctor);
+        return "Office changed successfully";
+    }
+
 
     @Override
     public boolean doctorExists(Long id) {

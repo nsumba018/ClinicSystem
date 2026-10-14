@@ -17,4 +17,5 @@ public interface DoctorService {
     String updateDoctorSpecialization(Long doctorId, Long specializationId);
     boolean doctorExists(Long id);
     String removeDoctorSpecialization(Long doctorId, Long specializationId);
+    String changeDoctorOffice(Long doctorId, int officeNumber);
 }

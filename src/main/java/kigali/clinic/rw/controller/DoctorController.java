@@ -50,14 +50,12 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.OK).body("Doctor updated successfully");
     }
 
-    // B1
     @GetMapping("/by-specialization")
     public ResponseEntity<?> getDoctorsBySpecialization(@RequestParam String name) {
         List<Doctor> doctors = doctorService.getDoctorsBySpecialization(name);
         return ResponseEntity.status(HttpStatus.OK).body(doctors);
     }
 
-    // B2
     @GetMapping("/without-office")
     public ResponseEntity<?> getDoctorsWithoutOffice() {
         List<Doctor> doctors = doctorService.getDoctorsWithoutOffice();
@@ -90,6 +88,20 @@ public class DoctorController {
         } else if (returnedMsg.equals("The doctor does not have that specialization")) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(returnedMsg);
         } else {
+            return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
+        }
+    }
+
+    // A4
+    @PatchMapping("/{doctorId}/office")
+    public ResponseEntity<String> changeDoctorOffice(@PathVariable Long doctorId, @RequestParam int officeNumber){
+        String returnedMsg = doctorService.changeDoctorOffice(doctorId, officeNumber);
+        if(returnedMsg.equals("The doctor with that id does not exist") ||
+                returnedMsg.equals("The office with that office number does not exist")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(returnedMsg);
+        }else if(returnedMsg.equals("That office is taken by other doctor")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(returnedMsg);
+        }else{
             return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
         }
     }

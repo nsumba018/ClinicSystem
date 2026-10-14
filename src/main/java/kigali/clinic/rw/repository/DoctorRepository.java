@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     boolean existsByFirstNameAndLastNameAndDateOfBirth(String firstName, String lastName, Date dateOfBirth);
+    boolean existsByOffice(Office office);
 
     @Transactional
     @Modifying
@@ -30,5 +31,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query("select d from Doctor d where d.office is null order by d.lastName")
     List<Doctor> findDoctorsWithoutOffice();
 
-    
+
 }
