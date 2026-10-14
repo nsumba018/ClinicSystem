@@ -13,9 +13,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     @Transactional
     @Modifying
     @Query("""
-            update Patient p set p.firstName = ?1, p.lastName = ?2, p.dateOfBirth = ?3
-            where p.id = ?4""")
-    int updatePatientById(String firstName, String lastName, Date dateOfBirth, Long id);
+            update Patient p set p.firstName = ?1, p.lastName = ?2, p.dateOfBirth = ?3, p.ssNumber = ?4
+            where p.id = ?5""")
+    int updatePatientById(String firstName, String lastName, Date dateOfBirth, String ssNumber, Long id);
 
     // A1
     List<Patient> findByLastNameIgnoreCaseOrderByFirstNameAsc(String lastName);

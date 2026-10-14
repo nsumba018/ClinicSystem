@@ -42,7 +42,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public String updatePatient(Patient patient) {
         patientRepository.updatePatientById(patient.getFirstName(),patient.getLastName(),
-                patient.getDateOfBirth(), patient.getId());
+                patient.getDateOfBirth(),patient.getSsNumber(), patient.getId());
         return "Patient updated successfully";
     }
 
