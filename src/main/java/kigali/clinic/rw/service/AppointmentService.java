@@ -22,4 +22,5 @@ public interface AppointmentService {
     String deleteCancelledBefore(LocalDate date);
     String updateAppointmentStatus(Long id, AppointmentStatus status);
     String rescheduleAppointment(Long id, LocalDate newDate);
+    String deleteAppointment(Long id);
 }

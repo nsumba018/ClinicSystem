@@ -110,4 +110,16 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(returnedMsg);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAppointment(@PathVariable Long id){
+        String returnedMsg = appointeService.deleteAppointment(id);
+        if(returnedMsg.equals("The appointment with that id does not exist")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(returnedMsg);
+        }else if(returnedMsg.equals("That appointment has prescriptions, delete them first")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(returnedMsg);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
+        }
+    }
 }

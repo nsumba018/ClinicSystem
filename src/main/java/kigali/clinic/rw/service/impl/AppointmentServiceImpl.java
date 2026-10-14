@@ -3,6 +3,7 @@ package kigali.clinic.rw.service.impl;
 import kigali.clinic.rw.domain.Appointment;
 import kigali.clinic.rw.domain.AppointmentStatus;
 import kigali.clinic.rw.repository.AppointmentRepository;
+import kigali.clinic.rw.repository.PrescriptionRepository;
 import kigali.clinic.rw.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private PrescriptionRepository prescriptionRepository;
 
     @Override
     public String saveAppointment(Appointment appointment) {
@@ -118,5 +122,19 @@ public class AppointmentServiceImpl implements AppointmentService {
         foundAppointment.setStatus(AppointmentStatus.SCHEDULED);
         appointmentRepository.save(foundAppointment);
         return "Appointment rescheduled successfully";
+    }
+
+    @Override
+    public String deleteAppointment(Long id) {
+        // C4
+        Optional<Appointment> appointment = appointmentRepository.findById(id);
+        if(appointment.isEmpty()){
+            return "The appointment with that id does not exist";
+        }else if(prescriptionRepository.existsByAppointmentId(id)){
+            return "That appointment has prescriptions, delete them first";
+        }else{
+            appointmentRepository.deleteById(id);
+            return "Appointment deleted successfully";
+        }
     }
 }
