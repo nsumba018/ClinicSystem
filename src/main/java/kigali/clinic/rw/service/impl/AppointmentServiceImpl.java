@@ -93,4 +93,30 @@ public class AppointmentServiceImpl implements AppointmentService {
             return "Cannot change status from " + oldStatus + " to " + status;
         }
     }
+
+    @Override
+    public String rescheduleAppointment(Long id, LocalDate newDate) {
+        // B3
+        Optional<Appointment> appointment = appointmentRepository.findById(id);
+        if(appointment.isEmpty()){
+            return "The appointment with that id does not exist";
+        }
+        Appointment foundAppointment = appointment.get();
+        if(foundAppointment.getStatus() == AppointmentStatus.COMPLETED){
+            return "A COMPLETED appointment cannot be rescheduled";
+        }else if(foundAppointment.getStatus() == AppointmentStatus.CANCELLED){
+            return "A CANCELLED appointment cannot be rescheduled";
+        }else if(newDate.isBefore(LocalDate.now())){
+            return "Appointment date cannot be in the past";
+        }
+        boolean alreadyBooked = appointmentRepository.existsByDoctorIdAndAppointmentDateAndStatusNotAndIdNot(
+                foundAppointment.getDoctor().getId(), newDate, AppointmentStatus.CANCELLED, id);
+        if(alreadyBooked){
+            return "Doctor is already booked on that date";
+        }
+        foundAppointment.setAppointmentDate(newDate);
+        foundAppointment.setStatus(AppointmentStatus.SCHEDULED);
+        appointmentRepository.save(foundAppointment);
+        return "Appointment rescheduled successfully";
+    }
 }

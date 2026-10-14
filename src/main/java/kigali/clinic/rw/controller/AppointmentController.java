@@ -94,4 +94,20 @@ public class AppointmentController {
             return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
         }
     }
+
+    // B3
+    @PatchMapping("/{id}/reschedule")
+    public ResponseEntity<String> rescheduleAppointment(@PathVariable Long id, @RequestParam String newDate){
+        LocalDate theDate = LocalDate.parse(newDate);
+        String returnedMsg = appointeService.rescheduleAppointment(id, theDate);
+        if(returnedMsg.equals("The appointment with that id does not exist")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(returnedMsg);
+        }else if(returnedMsg.equals("Doctor is already booked on that date")){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(returnedMsg);
+        }else if(returnedMsg.equals("Appointment rescheduled successfully")){
+            return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(returnedMsg);
+        }
+    }
 }

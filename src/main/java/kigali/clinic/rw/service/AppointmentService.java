@@ -21,4 +21,5 @@ public interface AppointmentService {
     Page<Appointment> getAppointmentsPage(Pageable pageable);
     String deleteCancelledBefore(LocalDate date);
     String updateAppointmentStatus(Long id, AppointmentStatus status);
+    String rescheduleAppointment(Long id, LocalDate newDate);
 }
