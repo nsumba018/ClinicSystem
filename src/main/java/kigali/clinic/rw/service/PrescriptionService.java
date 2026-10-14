@@ -11,4 +11,5 @@ public interface PrescriptionService {
     String updatePrescription(Prescription prescription, Long id);
     String deletePrescription(Long id);
     boolean appointmentHasPrescriptions(Long appointmentId);
+    List<Object[]> getTopMedicines();
 }

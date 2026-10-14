@@ -86,4 +86,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public boolean appointmentHasPrescriptions(Long appointmentId) {
         return prescriptionRepository.existsByAppointmentId(appointmentId);
     }
+
+    @Override
+    public List<Object[]> getTopMedicines() {
+        // Bonus 1
+        return prescriptionRepository.findTopMedicines();
+    }
 }

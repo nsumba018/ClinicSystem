@@ -43,4 +43,15 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             """)
     List<Doctor> searchDoctorsByName(String name);
 
+    // Bonus 2
+    @Query("""
+            select d.firstName, d.lastName, count(a)
+            from Appointment a join a.doctor d
+            where a.status = kigali.clinic.rw.domain.AppointmentStatus.COMPLETED
+            and a.appointmentDate between ?1 and ?2
+            group by d.id, d.firstName, d.lastName
+            order by count(a) desc
+            """)
+    List<Object[]> findDoctorWorkload(LocalDate start, LocalDate end);
+
 }

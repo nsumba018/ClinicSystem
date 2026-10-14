@@ -157,6 +157,12 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.searchDoctorsByName(name);
     }
 
+    @Override
+    public List<Object[]> getDoctorWorkload(LocalDate start, LocalDate end) {
+        // Bonus 2
+        return doctorRepository.findDoctorWorkload(start, end);
+    }
+
 
     @Override
     public boolean doctorExists(Long id) {

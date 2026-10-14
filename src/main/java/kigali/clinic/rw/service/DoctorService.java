@@ -22,4 +22,5 @@ public interface DoctorService {
     String changeDoctorOffice(Long doctorId, int officeNumber);
     List<Appointment> getDoctorAgenda(Long doctorId, LocalDate date);
     List<Doctor> searchDoctors(String name);
+    List<Object[]> getDoctorWorkload(LocalDate start, LocalDate end);
 }

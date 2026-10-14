@@ -16,4 +16,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
     List<Prescription> findPrescriptionsOfPatient(String ssNumber);
 
     boolean existsByAppointmentId(Long appointmentId);
+
+    // Bonus 1
+    @Query("select p.medicineName, count(p) from Prescription p group by p.medicineName order by count(p) desc")
+    List<Object[]> findTopMedicines();
 }

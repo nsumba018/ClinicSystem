@@ -127,4 +127,13 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.OK).body(doctors);
     }
 
+    // Bonus 2
+    @GetMapping("/workload")
+    public ResponseEntity<?> getDoctorWorkload(@RequestParam String start, @RequestParam String end){
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        List<Object[]> workload = doctorService.getDoctorWorkload(startDate, endDate);
+        return ResponseEntity.status(HttpStatus.OK).body(workload);
+    }
+
 }

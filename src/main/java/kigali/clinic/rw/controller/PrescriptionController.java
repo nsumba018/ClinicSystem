@@ -73,4 +73,11 @@ public class PrescriptionController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
     }
+
+    // Bonus 1
+    @GetMapping("/stats/top-medicines")
+    public ResponseEntity<?> getTopMedicines(){
+        List<Object[]> medicines = prescriptionService.getTopMedicines();
+        return ResponseEntity.status(HttpStatus.OK).body(medicines);
+    }
 }
