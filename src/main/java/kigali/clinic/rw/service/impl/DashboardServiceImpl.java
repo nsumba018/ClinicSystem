@@ -38,7 +38,7 @@ public class DashboardServiceImpl implements DashboardService {
         Map<String, Long> summary = new LinkedHashMap<>();
         summary.put("patients", patientRepository.count());
         summary.put("doctors", doctorRepository.count());
-        summary.put("freeOffices", officeRepository.countFreeOffices());
+        summary.put("freeOffices", (long) officeRepository.findFreeOffices().size());
         summary.put("appointmentsToday", appointmentRepository.countByAppointmentDate(LocalDate.now()));
         summary.put("scheduled", appointmentRepository.countByStatus(AppointmentStatus.SCHEDULED));
         summary.put("prescriptions", prescriptionRepository.count());

@@ -34,8 +34,5 @@ public interface OfficeRepository extends JpaRepository<Office,Long> {
 
     @Query("select o from Office o where o.doctor is null order by o.officeNumber")
     List<Office> findFreeOffices();
-
-    @Query("select count(o) from Office o where o.doctor is null")
-    long countFreeOffices();
-
+    
 }
