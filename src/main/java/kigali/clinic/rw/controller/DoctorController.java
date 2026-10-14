@@ -62,6 +62,7 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.OK).body(doctors);
     }
 
+
     // A1
     @PutMapping("/{doctorId}/specializations/{specializationId}")
     public ResponseEntity<String> updateSpecialization(@PathVariable Long doctorId, @PathVariable Long specializationId) {
@@ -105,4 +106,5 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
         }
     }
+
 }

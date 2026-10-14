@@ -17,6 +17,8 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     boolean existsByFirstNameAndLastNameAndDateOfBirth(String firstName, String lastName, Date dateOfBirth);
     boolean existsByOffice(Office office);
 
+
+
     @Transactional
     @Modifying
     @Query("""

@@ -21,12 +21,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public String saveAppointment(Appointment appointment) {
-        // A4
+        // B1
+        if(appointment.getAppointmentDate().isBefore(LocalDate.now())){
+            return "Appointment date cannot be in the past";
+        }
         boolean alreadyBooked = appointmentRepository.existsByDoctorIdAndAppointmentDateAndStatusNot(
                 appointment.getDoctor().getId(), appointment.getAppointmentDate(), AppointmentStatus.CANCELLED);
         if(alreadyBooked){
             return "Doctor is already booked on that date";
         }
+        appointment.setStatus(AppointmentStatus.SCHEDULED);
         appointmentRepository.save(appointment);
         return "Appointment Saved Successfully";
     }

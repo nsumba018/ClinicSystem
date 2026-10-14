@@ -34,19 +34,19 @@ public class AppointmentController {
         String returnedMsg = appointeService.saveAppointment(appointment);
         if(returnedMsg.equals("Appointment Saved Successfully")) {
             return new ResponseEntity<>("Appointment Saved Successfully", HttpStatus.CREATED);
+        }else if(returnedMsg.equals("Appointment date cannot be in the past")){
+            return new ResponseEntity<>(returnedMsg, HttpStatus.BAD_REQUEST);
         }else{
             return new ResponseEntity<>(returnedMsg, HttpStatus.CONFLICT);
         }
     }
 
-    // A2
     @GetMapping("/by-status")
     public ResponseEntity<?> getAppointmentsByStatus(@RequestParam AppointmentStatus status){
         List<Appointment> appointments = appointeService.getAppointmentsByStatus(status);
         return ResponseEntity.status(HttpStatus.OK).body(appointments);
     }
 
-    // A3
     @GetMapping("/between")
     public ResponseEntity<?> getAppointmentsBetween(@RequestParam String start, @RequestParam String end){
         LocalDate startDate = LocalDate.parse(start);
@@ -55,14 +55,12 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(appointments);
     }
 
-    // C1
     @GetMapping("/stats/by-status")
     public ResponseEntity<?> countAppointmentsByStatus(){
         List<Object[]> stats = appointeService.countAppointmentsByStatus();
         return ResponseEntity.status(HttpStatus.OK).body(stats);
     }
 
-    // C4
     @PatchMapping("/cancel-day")
     public ResponseEntity<String> cancelDayOfDoctor(@RequestParam Long doctorId, @RequestParam String date){
         LocalDate theDate = LocalDate.parse(date);
@@ -70,7 +68,6 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
     }
 
-    // BN1
     @GetMapping("/page")
     public ResponseEntity<?> getAppointmentsPage(@RequestParam int page, @RequestParam int size,
                                                  @RequestParam String sort){
@@ -84,8 +81,7 @@ public class AppointmentController {
         Page<Appointment> appointmentsPage = appointeService.getAppointmentsPage(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(appointmentsPage);
     }
-
-    // BN2
+    
     @DeleteMapping("/cancelled-before")
     public ResponseEntity<String> deleteCancelledBefore(@RequestParam String date){
         LocalDate theDate = LocalDate.parse(date);
