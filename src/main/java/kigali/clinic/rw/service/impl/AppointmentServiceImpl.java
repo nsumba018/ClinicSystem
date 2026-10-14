@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -67,5 +68,29 @@ public class AppointmentServiceImpl implements AppointmentService {
     public String deleteCancelledBefore(LocalDate date) {
         int howMany = appointmentRepository.deleteCancelledBefore(date);
         return howMany + " appointments deleted";
+    }
+
+    @Override
+    public String updateAppointmentStatus(Long id, AppointmentStatus status) {
+        // B2
+        Optional<Appointment> appointment = appointmentRepository.findById(id);
+        if(appointment.isEmpty()){
+            return "The appointment with that id does not exist";
+        }
+        Appointment foundAppointment = appointment.get();
+        AppointmentStatus oldStatus = foundAppointment.getStatus();
+        if(oldStatus == AppointmentStatus.SCHEDULED &&
+                (status == AppointmentStatus.CONFIRMED || status == AppointmentStatus.CANCELLED)){
+            foundAppointment.setStatus(status);
+            appointmentRepository.save(foundAppointment);
+            return "Appointment status updated successfully";
+        }else if(oldStatus == AppointmentStatus.CONFIRMED &&
+                (status == AppointmentStatus.COMPLETED || status == AppointmentStatus.CANCELLED)){
+            foundAppointment.setStatus(status);
+            appointmentRepository.save(foundAppointment);
+            return "Appointment status updated successfully";
+        }else{
+            return "Cannot change status from " + oldStatus + " to " + status;
+        }
     }
 }
