@@ -24,11 +24,11 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     int updateDoctorById(String firstName, String lastName, Date dateOfBirth,
                          Long id, Office office);
 
-    // B1
     @Query("select d from Doctor d join d.specializations s where lower(s.name) = lower(?1)")
     List<Doctor> findDoctorsBySpecialization(String name);
 
-    // B2
     @Query("select d from Doctor d where d.office is null order by d.lastName")
     List<Doctor> findDoctorsWithoutOffice();
+
+    
 }

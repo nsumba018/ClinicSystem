@@ -1,7 +1,9 @@
 package kigali.clinic.rw.service.impl;
 
 import kigali.clinic.rw.domain.Doctor;
+import kigali.clinic.rw.domain.Specialization;
 import kigali.clinic.rw.repository.DoctorRepository;
+import kigali.clinic.rw.repository.SpecializationRepository;
 import kigali.clinic.rw.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private SpecializationRepository specializationRepository;
 
     @Override
     public String saveDoctor(Doctor doctor) {
@@ -67,6 +72,26 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<Doctor> getDoctorsWithoutOffice() {
         return doctorRepository.findDoctorsWithoutOffice();
+    }
+
+    @Override
+    @Transactional
+    public String updateDoctorSpecialization(Long doctorId, Long specializationId) {
+        Optional<Doctor> findDoctor = doctorRepository.findById(doctorId);
+        Optional<Specialization> specialization = specializationRepository.findById(specializationId);
+        if (findDoctor.isEmpty()){
+            return "The doctor with that id does not exist";
+        }else if(specialization.isEmpty()){
+            return "That specialization does not exist";
+        }else{
+            Doctor doctor = findDoctor.get();
+            if(doctor.getSpecializations().contains(specialization.get())){
+                return "The doctor already has that specialization";
+            }
+            doctor.getSpecializations().add(specialization.get());
+            doctorRepository.save(doctor);
+            return "Specialization added to the doctor";
+        }
     }
 
     @Override

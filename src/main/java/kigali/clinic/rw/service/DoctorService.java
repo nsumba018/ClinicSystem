@@ -14,6 +14,6 @@ public interface DoctorService {
     List<Doctor> getDoctorsBySpecialization(String name);
 
     List<Doctor> getDoctorsWithoutOffice();
-
+    String updateDoctorSpecialization(Long doctorId, Long specializationId);
     boolean doctorExists(Long id);
 }
