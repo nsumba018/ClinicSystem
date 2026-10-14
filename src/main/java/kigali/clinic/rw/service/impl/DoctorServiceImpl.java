@@ -95,6 +95,26 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Transactional
+    public String removeDoctorSpecialization(Long doctorId, Long specializationId) {
+        Optional<Doctor> findDoctor = doctorRepository.findById(doctorId);
+        Optional<Specialization> specialization = specializationRepository.findById(specializationId);
+        if (findDoctor.isEmpty()){
+            return "The doctor with that id does not exist";
+        }else if(specialization.isEmpty()){
+            return "That specialization does not exist";
+        }else{
+            Doctor doctor = findDoctor.get();
+            if(!doctor.getSpecializations().contains(specialization.get())){
+                return "The doctor does not have that specialization";
+            }
+            doctor.getSpecializations().remove(specialization.get());
+            doctorRepository.save(doctor);
+            return "Specialization removed from the doctor";
+        }
+    }
+
+    @Override
     public boolean doctorExists(Long id) {
         Optional<Doctor> doctor = doctorRepository.findById(id);
         return doctor.isPresent();
