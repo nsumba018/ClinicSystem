@@ -25,11 +25,15 @@ public interface OfficeRepository extends JpaRepository<Office,Long> {
     @Query("update Office o set o.name = ?1, o.officeNumber = ?2 where o.id = ?3")
     int updateOfficeById(String name, int officeNumber, @NonNull Long id);
 
-    // C3
     @Query("""
             select o.name, o.officeNumber, count(a)
             from Appointment a join a.doctor d join d.office o
             group by o.id, o.name, o.officeNumber
             order by count(a) desc""")
     List<Object[]> findOfficesByAppointmentCount(Pageable pageable);
+
+    @Query("select o from Office o where o.doctor is null order by o.officeNumber")
+    List<Office> findFreeOffices();
+
+
 }

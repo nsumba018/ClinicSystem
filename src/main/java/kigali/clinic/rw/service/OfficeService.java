@@ -9,6 +9,6 @@ public interface OfficeService {
     List<Office> getOffices();
     String deleteOffice(Long id);
     String updateOffice(Office office);
-
+    List<Office> getFreeOffices();
     List<Object[]> getOfficesByAppointmentCount();
 }

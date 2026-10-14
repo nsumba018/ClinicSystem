@@ -46,6 +46,12 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     @Override
+    public List<Office> getFreeOffices() {
+        List<Office> freeOffices =  offRepo.findFreeOffices();
+        return freeOffices;
+    }
+
+    @Override
     public List<Object[]> getOfficesByAppointmentCount(){
         Pageable topOne = PageRequest.of(0, 1);
         return offRepo.findOfficesByAppointmentCount(topOne);

@@ -56,7 +56,6 @@ public class OfficeController {
         return new ResponseEntity<>("Office has been updated successfully", HttpStatus.OK);
     }
 
-    // C3
     @GetMapping(value = "/busiest")
     public ResponseEntity<?> getBusiestOffice(){
         List<Object[]> offices = offServe.getOfficesByAppointmentCount();
@@ -64,5 +63,12 @@ public class OfficeController {
             return ResponseEntity.status(HttpStatus.OK).body("No appointments yet");
         }
         return ResponseEntity.status(HttpStatus.OK).body(offices.get(0));
+    }
+
+    // A3
+    @GetMapping(value = "/free")
+    public ResponseEntity<?> getFreeOffices(){
+        List<Office> offices = offServe.getFreeOffices();
+        return ResponseEntity.status(HttpStatus.OK).body(offices);
     }
 }
