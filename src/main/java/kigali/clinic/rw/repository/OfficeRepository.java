@@ -1,5 +1,6 @@
 package kigali.clinic.rw.repository;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,5 +31,5 @@ public interface OfficeRepository extends JpaRepository<Office,Long> {
             from Appointment a join a.doctor d join d.office o
             group by o.id, o.name, o.officeNumber
             order by count(a) desc""")
-    List<Object[]> findOfficesByAppointmentCount();
+    List<Object[]> findOfficesByAppointmentCount(Pageable pageable);
 }

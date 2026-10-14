@@ -4,6 +4,8 @@ import kigali.clinic.rw.domain.Office;
 import kigali.clinic.rw.repository.OfficeRepository;
 import kigali.clinic.rw.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +47,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     @Override
     public List<Object[]> getOfficesByAppointmentCount(){
-        return offRepo.findOfficesByAppointmentCount();
+        Pageable topOne = PageRequest.of(0, 1);
+        return offRepo.findOfficesByAppointmentCount(topOne);
     }
 }
