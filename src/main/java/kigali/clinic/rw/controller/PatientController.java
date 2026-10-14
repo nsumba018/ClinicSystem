@@ -1,6 +1,7 @@
 package kigali.clinic.rw.controller;
 
 import kigali.clinic.rw.domain.Patient;
+import kigali.clinic.rw.domain.Appointment;
 import kigali.clinic.rw.service.DoctorService;
 import kigali.clinic.rw.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -71,5 +72,15 @@ public class PatientController {
     public ResponseEntity<?> getFrequentPatients(@RequestParam long min){
         List<Patient> patients = patientService.getFrequentPatients(min);
         return ResponseEntity.status(HttpStatus.OK).body(patients);
+    }
+
+    // D2
+    @GetMapping("/{ssNumber}/upcoming")
+    public ResponseEntity<?> getUpcomingAppointments(@PathVariable String ssNumber){
+        List<Appointment> appointments = patientService.getUpcomingAppointments(ssNumber);
+        if(appointments == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("That patient with that ssnumber does not exist");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(appointments);
     }
 }

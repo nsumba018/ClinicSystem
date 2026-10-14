@@ -1,6 +1,7 @@
 package kigali.clinic.rw.service;
 
 import kigali.clinic.rw.domain.Patient;
+import kigali.clinic.rw.domain.Appointment;
 
 import java.util.List;
 
@@ -13,5 +14,6 @@ public interface PatientService {
     List<Patient> getPatientsByLastName(String lastName);
     List<Patient> getPatientsOfDoctor(Long doctorId);
     List<Patient> getFrequentPatients(long min);
+    List<Appointment> getUpcomingAppointments(String ssNumber);
 
 }

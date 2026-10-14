@@ -1,9 +1,12 @@
 package kigali.clinic.rw.service.impl;
 
 import kigali.clinic.rw.domain.Doctor;
+import kigali.clinic.rw.domain.Appointment;
+import kigali.clinic.rw.domain.AppointmentStatus;
 import kigali.clinic.rw.domain.Office;
 import kigali.clinic.rw.domain.Specialization;
 import kigali.clinic.rw.repository.DoctorRepository;
+import kigali.clinic.rw.repository.AppointmentRepository;
 import kigali.clinic.rw.repository.OfficeRepository;
 import kigali.clinic.rw.repository.SpecializationRepository;
 import kigali.clinic.rw.service.DoctorService;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +28,9 @@ public class DoctorServiceImpl implements DoctorService {
     private SpecializationRepository specializationRepository;
     @Autowired
     private OfficeRepository officeRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Override
     public String saveDoctor(Doctor doctor) {
@@ -136,6 +143,18 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setOffice(office.get());
         doctorRepository.save(doctor);
         return "Office changed successfully";
+    }
+
+    @Override
+    public List<Appointment> getDoctorAgenda(Long doctorId, LocalDate date) {
+        // D1
+        return appointmentRepository.findByDoctorIdAndAppointmentDateAndStatusNot(doctorId, date, AppointmentStatus.CANCELLED);
+    }
+
+    @Override
+    public List<Doctor> searchDoctors(String name) {
+        // D3
+        return doctorRepository.searchDoctorsByName(name);
     }
 
 

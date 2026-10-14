@@ -1,12 +1,17 @@
 package kigali.clinic.rw.service.impl;
 
 import kigali.clinic.rw.domain.Patient;
+import kigali.clinic.rw.domain.Appointment;
+import kigali.clinic.rw.domain.AppointmentStatus;
+import kigali.clinic.rw.repository.AppointmentRepository;
 import kigali.clinic.rw.repository.PatientRepository;
 import kigali.clinic.rw.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -14,6 +19,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     @Override
     public String savePatient(Patient patient) {
@@ -59,5 +67,15 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<Patient> getFrequentPatients(long min) {
         return patientRepository.findFrequentPatients(min);
+    }
+
+    @Override
+    public List<Appointment> getUpcomingAppointments(String ssNumber) {
+        if(!patientRepository.existsBySsNumber(ssNumber)){
+            return null;
+        }
+        List<AppointmentStatus> statuses = Arrays.asList(AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED);
+        return appointmentRepository.findByPatientSsNumberAndAppointmentDateGreaterThanEqualAndStatusInOrderByAppointmentDateAsc(
+                ssNumber, LocalDate.now(), statuses);
     }
 }

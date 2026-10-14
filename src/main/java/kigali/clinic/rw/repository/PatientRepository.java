@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
+    boolean existsBySsNumber(String ssNumber);
     @Transactional
     @Modifying
     @Query("""

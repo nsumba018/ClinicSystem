@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,5 +34,13 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query("select d from Doctor d where d.office is null order by d.lastName")
     List<Doctor> findDoctorsWithoutOffice();
 
+    // D3
+    @Query("""
+            select d from Doctor d
+            where lower(d.firstName) like lower(concat('%', ?1, '%'))
+            or lower(d.lastName) like lower(concat('%', ?1, '%'))
+            order by d.lastName
+            """)
+    List<Doctor> searchDoctorsByName(String name);
 
 }

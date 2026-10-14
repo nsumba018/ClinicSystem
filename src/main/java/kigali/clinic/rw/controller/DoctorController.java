@@ -1,6 +1,7 @@
 package kigali.clinic.rw.controller;
 
 import kigali.clinic.rw.domain.Doctor;
+import kigali.clinic.rw.domain.Appointment;
 import kigali.clinic.rw.repository.DoctorRepository;
 import kigali.clinic.rw.service.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -105,6 +107,24 @@ public class DoctorController {
         }else{
             return ResponseEntity.status(HttpStatus.OK).body(returnedMsg);
         }
+    }
+
+    // D1
+    @GetMapping("/{doctorId}/agenda")
+    public ResponseEntity<?> getDoctorAgenda(@PathVariable Long doctorId, @RequestParam String date){
+        if(!doctorService.doctorExists(doctorId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The doctor with that id does not exist");
+        }
+        LocalDate theDate = LocalDate.parse(date);
+        List<Appointment> appointments = doctorService.getDoctorAgenda(doctorId, theDate);
+        return ResponseEntity.status(HttpStatus.OK).body(appointments);
+    }
+
+    // D3
+    @GetMapping("/search")
+    public ResponseEntity<?> searchDoctors(@RequestParam String name){
+        List<Doctor> doctors = doctorService.searchDoctors(name);
+        return ResponseEntity.status(HttpStatus.OK).body(doctors);
     }
 
 }
